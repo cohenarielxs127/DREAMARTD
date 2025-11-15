@@ -1,67 +1,1193 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
+  <title>DREAMART – Vente d’affiches & décor mural</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CAP Garland, LLC</title>
+  <meta name="description" content="DREAMART – Vente d’affiches, décor mural et art imprimé à Sault-Brénaz. Transformez vos murs en galerie.">
   <style>
-    body {
-      font-family: Arial, sans-serif;
+    :root {
+      --fond-noir: #050510;
+      --violet: #7f5dff;
+      --rose: #ff4da6;
+      --cyan: #4df2ff;
+      --texte-principal: #f6f5ff;
+      --texte-secondaire: #b7b4d8;
+      --carte: rgba(12, 12, 32, 0.92);
+      --rayon: 1.4rem;
+      --transition: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
       margin: 0;
       padding: 0;
-      background-color: #f0f0f0;
-      color: #333;
+      box-sizing: border-box;
     }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--texte-principal);
+      background: radial-gradient(circle at top, #1d1235 0, #050510 50%, #020008 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* --- FOND ANIMÉ (néon) --- */
+    .bg-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.55;
+      z-index: -1;
+      mix-blend-mode: screen;
+      pointer-events: none;
+      animation: orbMove 26s linear infinite alternate;
+    }
+
+    .bg-orb:nth-child(1) {
+      width: 340px;
+      height: 340px;
+      background: radial-gradient(circle, var(--violet), transparent);
+      top: -60px;
+      left: -40px;
+    }
+
+    .bg-orb:nth-child(2) {
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, var(--rose), transparent);
+      bottom: -80px;
+      right: -80px;
+      animation-delay: -8s;
+    }
+
+    .bg-orb:nth-child(3) {
+      width: 280px;
+      height: 280px;
+      background: radial-gradient(circle, var(--cyan), transparent);
+      top: 30%;
+      right: -40px;
+      animation-delay: -14s;
+    }
+
+    @keyframes orbMove {
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+      50% {
+        transform: translate(50px, -40px) scale(1.05);
+      }
+      100% {
+        transform: translate(-40px, 40px) scale(1);
+      }
+    }
+
+    /* --- LIGNE DE PROGRESSION EN HAUT --- */
+    .scroll-line {
+      position: fixed;
+      inset: 0 0 auto;
+      height: 3px;
+      background: linear-gradient(90deg, var(--cyan), var(--violet), var(--rose));
+      transform-origin: left;
+      transform: scaleX(0);
+      z-index: 999;
+      box-shadow: 0 0 20px rgba(127, 93, 255, 0.9);
+    }
+
+    /* --- NAV --- */
     header {
-      background-color: #003366;
-      color: white;
-      padding: 30px 20px;
-      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 900;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(to bottom, rgba(5, 5, 16, 0.92), rgba(5, 5, 16, 0.5));
+      border-bottom: 1px solid rgba(127, 93, 255, 0.2);
     }
+
+    .nav {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0.7rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .logo-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 1.1rem;
+      background: conic-gradient(from 200deg, var(--violet), var(--rose), var(--cyan), var(--violet));
+      padding: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logo-mark-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 1rem;
+      background: radial-gradient(circle at 30% 0, #1a1530, #050510);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      font-size: 0.8rem;
+      color: var(--texte-principal);
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.85rem;
+    }
+
+    .logo-text strong {
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .logo-text span {
+      font-size: 0.75rem;
+      color: var(--texte-secondaire);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .nav-links a {
+      position: relative;
+      padding-bottom: 0.1rem;
+    }
+
+    /* soulignement fluide */
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -0.15rem;
+      width: 0;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--cyan), var(--rose));
+      transition: width 0.25s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* --- BOUTONS --- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.75rem 1.35rem;
+      border-radius: 999px;
+      border: 0;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--texte-principal);
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(circle at top left, rgba(127, 93, 255, 0.4), rgba(5, 5, 16, 0.9));
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+    }
+
+    .btn::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: conic-gradient(from 0deg, rgba(127, 93, 255, 0.4), rgba(77, 242, 255, 0.4), rgba(255, 77, 166, 0.4), rgba(127, 93, 255, 0.4));
+      opacity: 0;
+      animation: spinBorder 9s linear infinite;
+    }
+
+    .btn span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+      background: radial-gradient(circle at top, rgba(127, 93, 255, 0.6), rgba(5, 5, 16, 0.9));
+    }
+
+    .btn:hover::before {
+      opacity: 1;
+    }
+
+    @keyframes spinBorder {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid rgba(127, 93, 255, 0.7);
+      box-shadow: none;
+    }
+
+    .btn-outline:hover {
+      background: radial-gradient(circle at top right, rgba(255, 77, 166, 0.22), rgba(5, 5, 16, 0.95));
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.7);
+    }
+
+    .btn-icon {
+      font-size: 1rem;
+      transition: transform 0.25s ease;
+    }
+
+    .btn:hover .btn-icon {
+      transform: translateX(4px);
+    }
+
+    /* --- CONTENEUR PRINCIPAL --- */
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
     section {
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 0 20px;
+      margin-top: 4rem;
     }
-    h1, h2 {
-      color: #003366;
+
+    .section-header {
+      margin-bottom: 1.7rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
     }
-    .contact {
-      background: #fff;
-      padding: 20px;
-      border-left: 5px solid #003366;
-      margin-top: 30px;
+
+    .section-kicker {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--texte-secondaire);
     }
+
+    .section-title {
+      font-size: 1.5rem;
+    }
+
+    .section-subtitle {
+      font-size: 0.96rem;
+      color: var(--texte-secondaire);
+      max-width: 34rem;
+    }
+
+    /* --- HERO --- */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 2.3rem;
+      align-items: center;
+      margin-top: 2.3rem;
+    }
+
+    .hero-left {
+      position: relative;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      background: rgba(19, 17, 40, 0.9);
+      border: 1px solid rgba(127, 93, 255, 0.5);
+      font-size: 0.78rem;
+      color: var(--texte-secondaire);
+      margin-bottom: 1rem;
+    }
+
+    .hero-tag-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--cyan);
+      box-shadow: 0 0 0 6px rgba(77, 242, 255, 0.4);
+    }
+
+    .hero-title {
+      font-size: clamp(2rem, 3.4vw, 2.7rem);
+      line-height: 1.15;
+      margin-bottom: 0.7rem;
+    }
+
+    .hero-title span {
+      background: linear-gradient(120deg, var(--cyan), var(--violet), var(--rose));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-typewriter {
+      font-size: 1.05rem;
+      margin-bottom: 1.4rem;
+      color: var(--texte-secondaire);
+    }
+
+    .hero-typewriter strong {
+      color: var(--texte-principal);
+    }
+
+    .hero-typewriter .typing {
+      display: inline-block;
+      border-right: 2px solid var(--cyan);
+      padding-right: 3px;
+      margin-left: 4px;
+    }
+
+    .hero-text {
+      font-size: 0.98rem;
+      color: var(--texte-secondaire);
+      margin-bottom: 1.5rem;
+      max-width: 32rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      align-items: center;
+      margin-bottom: 1.4rem;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      font-size: 0.83rem;
+      color: var(--texte-secondaire);
+    }
+
+    .hero-meta-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.18rem;
+    }
+
+    .hero-meta-label {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.7rem;
+    }
+
+    .hero-meta-value {
+      color: var(--texte-principal);
+      font-weight: 500;
+    }
+
+    .hero-right {
+      position: relative;
+      perspective: 1400px;
+    }
+
+    .hero-frame {
+      position: relative;
+      border-radius: 1.8rem;
+      padding: 0.28rem;
+      background: radial-gradient(circle at top left, var(--cyan), transparent 40%),
+                  radial-gradient(circle at bottom right, var(--rose), transparent 45%);
+      box-shadow: 0 28px 55px rgba(0, 0, 0, 0.9);
+      transform-style: preserve-3d;
+      transition: transform 0.25s ease-out;
+    }
+
+    .hero-art {
+      border-radius: 1.6rem;
+      overflow: hidden;
+      background: #090818;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .hero-art img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.95;
+      transform: scale(1.05);
+      transition: transform 0.7s ease;
+    }
+
+    .hero-art::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 0 0, rgba(127, 93, 255, 0.18), transparent 50%);
+      mix-blend-mode: screen;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    .hero-frame:hover .hero-art img {
+      transform: scale(1.12);
+    }
+
+    .hero-frame:hover .hero-art::after {
+      opacity: 1;
+    }
+
+    .hero-badge-floating {
+      position: absolute;
+      bottom: -0.4rem;
+      left: 0.6rem;
+      padding: 0.6rem 0.9rem;
+      border-radius: 1.2rem;
+      background: rgba(8, 8, 22, 0.96);
+      border: 1px solid rgba(127, 93, 255, 0.5);
+      font-size: 0.76rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.18rem;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.9);
+      animation: floatBadge 6s ease-in-out infinite;
+    }
+
+    .hero-badge-floating strong {
+      font-size: 0.8rem;
+    }
+
+    @keyframes floatBadge {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    .hero-scroll {
+      margin-top: 1rem;
+      font-size: 0.78rem;
+      color: var(--texte-secondaire);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .hero-scroll span {
+      font-size: 1.1rem;
+      animation: bounceArrow 1.6s infinite;
+    }
+
+    @keyframes bounceArrow {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(4px);
+      }
+    }
+
+    /* --- SECTION OFFRES (cartes inclinables) --- */
+    .offers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.3rem;
+    }
+
+    .offer-card {
+      background: var(--carte);
+      border-radius: var(--rayon);
+      padding: 1.2rem 1.2rem 1.3rem;
+      border: 1px solid rgba(127, 93, 255, 0.25);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+      overflow: hidden;
+    }
+
+    .offer-card::before {
+      content: "";
+      position: absolute;
+      width: 190%;
+      height: 160%;
+      left: -50%;
+      top: -40%;
+      background: radial-gradient(circle at 0 0, rgba(127, 93, 255, 0.22), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+
+    .offer-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--texte-secondaire);
+      margin-bottom: 0.3rem;
+    }
+
+    .offer-title {
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .offer-text {
+      font-size: 0.9rem;
+      color: var(--texte-secondaire);
+      margin-bottom: 0.7rem;
+    }
+
+    .offer-tagline {
+      font-size: 0.8rem;
+      color: var(--cyan);
+    }
+
+    .offer-card.hovered::before {
+      opacity: 1;
+    }
+
+    /* --- GALERIE HORIZONTALE --- */
+    .gallery-strip {
+      margin-top: 1.4rem;
+      overflow-x: auto;
+      padding-bottom: 0.4rem;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(127, 93, 255, 0.9) rgba(5, 5, 16, 0.9);
+    }
+
+    .gallery-strip::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .gallery-strip::-webkit-scrollbar-track {
+      background: rgba(5, 5, 16, 0.9);
+    }
+
+    .gallery-strip::-webkit-scrollbar-thumb {
+      background: linear-gradient(90deg, var(--violet), var(--rose));
+      border-radius: 999px;
+    }
+
+    .gallery-row {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(240px, 320px);
+      gap: 1rem;
+    }
+
+    .gallery-card {
+      border-radius: 1.3rem;
+      overflow: hidden;
+      background: #090818;
+      position: relative;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.85);
+      scroll-snap-align: center;
+    }
+
+    .gallery-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      transform: scale(1.03);
+      transition: transform 0.5s ease;
+    }
+
+    .gallery-card:hover img {
+      transform: scale(1.08);
+    }
+
+    .gallery-label {
+      position: absolute;
+      left: 0.9rem;
+      bottom: 0.7rem;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(5, 5, 16, 0.85);
+      font-size: 0.78rem;
+    }
+
+    /* --- CONTACT --- */
+    .contact-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      gap: 2rem;
+      align-items: flex-start;
+    }
+
+    .contact-card {
+      background: var(--carte);
+      border-radius: var(--rayon);
+      padding: 1.3rem 1.4rem;
+      border: 1px solid rgba(127, 93, 255, 0.3);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.8);
+      font-size: 0.94rem;
+    }
+
+    .contact-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .contact-list strong {
+      display: block;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--texte-secondaire);
+      margin-bottom: 0.18rem;
+    }
+
+    .contact-list a {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+    }
+
+    .contact-list a:hover {
+      text-decoration-thickness: 2px;
+      color: var(--cyan);
+    }
+
+    .contact-note {
+      margin-top: 1rem;
+      font-size: 0.86rem;
+      color: var(--texte-secondaire);
+    }
+
+    .contact-form {
+      background: var(--carte);
+      border-radius: var(--rayon);
+      padding: 1.3rem 1.4rem;
+      border: 1px solid rgba(255, 77, 166, 0.25);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.85);
+    }
+
+    .contact-form form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      font-size: 0.9rem;
+    }
+
+    .field-row {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      flex: 1;
+    }
+
+    label {
+      font-weight: 500;
+    }
+
+    input,
+    textarea {
+      border-radius: 0.85rem;
+      border: 1px solid rgba(127, 93, 255, 0.4);
+      padding: 0.55rem 0.75rem;
+      background: rgba(8, 8, 22, 0.95);
+      color: var(--texte-principal);
+      font: inherit;
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 1px rgba(77, 242, 255, 0.65);
+      background: rgba(8, 8, 30, 0.98);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    /* --- FOOTER --- */
     footer {
-      background-color: #003366;
-      color: white;
-      text-align: center;
-      padding: 15px;
-      margin-top: 50px;
+      margin-top: 3.5rem;
+      padding: 1.4rem 1.4rem 1.7rem;
+      border-top: 1px solid rgba(127, 93, 255, 0.35);
+      background: radial-gradient(circle at top, #171330, #050510 60%);
+    }
+
+    .footer-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      font-size: 0.8rem;
+      color: var(--texte-secondaire);
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* --- ANIMATION D’APPARITION --- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* --- RESPONSIVE --- */
+    @media (max-width: 900px) {
+      .hero,
+      .offers-grid,
+      .contact-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .offers-grid {
+        gap: 1rem;
+      }
+
+      .hero {
+        gap: 1.7rem;
+      }
+
+      .hero-right {
+        order: -1;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      main {
+        padding-inline: 1rem;
+      }
+
+      .offers-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
     }
   </style>
 </head>
 <body>
+  <!-- Orbs de fond -->
+  <div class="bg-orb"></div>
+  <div class="bg-orb"></div>
+  <div class="bg-orb"></div>
+
+  <!-- Ligne de progression -->
+  <div class="scroll-line"></div>
+
+  <!-- NAV -->
   <header>
-    <h1>CAP Garland, LLC</h1>
-    <p>Private Investment Fund</p>
+    <div class="nav">
+      <div class="logo">
+        <div class="logo-mark">
+          <div class="logo-mark-inner">DA</div>
+        </div>
+        <div class="logo-text">
+          <strong>DREAMART</strong>
+          <span>Vente d’art mural & affiches</span>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="#univers">Univers</a>
+        <a href="#offres">Offres</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
   </header>
 
-  <section>
-    <h2>About Us</h2>
-    <p>CAP Garland, LLC is a Washington-based private investment fund focused on delivering value through diversified investment strategies.</p>
+  <main>
+    <!-- HERO -->
+    <section id="univers" class="hero">
+      <div class="hero-left reveal">
+        <div class="hero-tag">
+          <span class="hero-tag-dot"></span>
+          Vente d’art mural – Sault-Brénaz, France
+        </div>
+        <h1 class="hero-title">
+          Transformez vos murs
+          en <span>galerie onirique</span>.
+        </h1>
+        <p class="hero-typewriter">
+          <strong>DREAMART</strong> vous propose&nbsp;:
+          <span class="typing" id="typing-text"></span>
+        </p>
+        <p class="hero-text">
+          Affiches, tirages et décor mural sélectionnés pour donner du caractère à vos salons,
+          bureaux, cafés ou espaces d’accueil. Livraison depuis
+          <strong>Rue de l’Industrie – 01150 Sault-Brénaz</strong>.
+        </p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn">
+            <span>Demander un devis</span>
+            <span class="btn-icon">➜</span>
+          </a>
+          <a href="#offres" class="btn btn-outline">
+            <span>Voir les collections</span>
+          </a>
+        </div>
+        <div class="hero-meta">
+          <div class="hero-meta-block">
+            <span class="hero-meta-label">E-mail</span>
+            <span class="hero-meta-value">
+              <a href="mailto:contact@belmorae.shop">contact@belmorae.shop</a>
+            </span>
+          </div>
+          <div class="hero-meta-block">
+            <span class="hero-meta-label">Téléphone</span>
+            <span class="hero-meta-value">
+              <a href="tel:+33745544385">+33 7 45 54 43 85</a>
+            </span>
+          </div>
+          <div class="hero-meta-block">
+            <span class="hero-meta-label">Localisation</span>
+            <span class="hero-meta-value">
+              Rue de l’Industrie<br>Sault-Brénaz 01150 – France
+            </span>
+          </div>
+        </div>
+        <div class="hero-scroll">
+          Faites défiler pour explorer
+          <span>↓</span>
+        </div>
+      </div>
 
-    <h2>Contact</h2>
-    <div class="contact">
-      <p><strong>Address:</strong> 915 W 2nd Ave, Spokane, WA 99201</p>
-      <p><strong>Email:</strong> <a href="mailto:ryanberg@capgarland.shop">ryanberg@capgarland.shop</a></p>
-      <p><strong>Phone:</strong> (509) 822-3850</p>
-    </div>
-  </section>
+      <div class="hero-right reveal">
+        <div class="hero-frame" id="hero-frame">
+          <div class="hero-art">
+            <img src="https://avatars.mds.yandex.net/get-mpic/11408361/2a000001920b78bdf8978cf579e24b3042a6/orig" alt="Décor mural DREAMART">
+          </div>
+          <div class="hero-badge-floating">
+            <strong>Univers DREAMART</strong>
+            <span>Affiches prêtes à accrocher, formats modulables, séries limitées.</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <!-- OFFRES -->
+    <section id="offres" class="reveal">
+      <div class="section-header">
+        <div class="section-kicker">Offres & services</div>
+        <h2 class="section-title">Composez un mur qui raconte une histoire</h2>
+        <p class="section-subtitle">
+          Que vous soyez particulier, créateur d’espace ou professionnel (bureaux, hôtels, cafés),
+          DREAMART prépare des sélections visuelles cohérentes avec votre univers.
+        </p>
+      </div>
+
+      <div class="offers-grid">
+        <article class="offer-card" data-tilt>
+          <div class="offer-label">Affiches & tirages</div>
+          <h3 class="offer-title">Affiches prêtes à encadrer</h3>
+          <p class="offer-text">
+            Sélection d’illustrations, photographies et créations graphiques prêtes à encadrer.
+            Différents formats possibles pour s’adapter à la taille de votre mur.
+          </p>
+          <div class="offer-tagline">
+            Formats A3, A2, A1 & grands panoramiques.
+          </div>
+        </article>
+
+        <article class="offer-card" data-tilt>
+          <div class="offer-label">Mur d’images</div>
+          <h3 class="offer-title">Compositions sur-mesure</h3>
+          <p class="offer-text">
+            Nous imaginons avec vous un mur complet : combinaison de plusieurs affiches,
+            harmonisation des couleurs et styles pour un rendu impactant.
+          </p>
+          <div class="offer-tagline">
+            Idéal pour salons, open-spaces, salles d’attente & concept stores.
+          </div>
+        </article>
+
+        <article class="offer-card" data-tilt>
+          <div class="offer-label">Pro & événementiel</div>
+          <h3 class="offer-title">Décor pour lieux & événements</h3>
+          <p class="offer-text">
+            Ambiance visuelle pour vos lancements de produit, expositions éphémères,
+            pop-up stores ou shootings photo.
+          </p>
+          <div class="offer-tagline">
+            Proposition rapide à partir de vos contraintes de lieu et de budget.
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- GALERIE HORIZONTALE -->
+    <section class="reveal">
+      <div class="section-header">
+        <div class="section-kicker">Aperçu visuel</div>
+        <h2 class="section-title">Quelques atmosphères signées DREAMART</h2>
+        <p class="section-subtitle">
+          Un aperçu de l’esprit que nous aimons créer : entre lumière, texture et profondeur,
+          pour que vos murs deviennent de véritables scènes.
+        </p>
+      </div>
+
+      <div class="gallery-strip">
+        <div class="gallery-row">
+          <article class="gallery-card">
+            <img src="https://avatars.mds.yandex.net/get-mpic/4343038/2a000001924eb4c9afe356644be84da69f76/orig" alt="Mur de cadres design">
+            <div class="gallery-label">Mur de cadres – Salon contemporain</div>
+          </article>
+          <article class="gallery-card">
+            <img src="https://avatars.mds.yandex.net/i?id=5746117c93ffa33b2d5c4a12d09554f8_l-4482678-images-thumbs&ref=rim&n=13&w=960&h=720" alt="Décor mural dans un espace de travail">
+            <div class="gallery-label">Espace de travail – ambiance créative</div>
+          </article>
+          <article class="gallery-card">
+            <img src="https://avatars.mds.yandex.net/get-mpic/11408361/2a000001920b78bdf8978cf579e24b3042a6/orig" alt="Ambiance murale DREAMART">
+            <div class="gallery-label">Sélection DREAMART – série limitée</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="reveal">
+      <div class="section-header">
+        <div class="section-kicker">Contact & devis</div>
+        <h2 class="section-title">Parlons de votre mur idéal</h2>
+        <p class="section-subtitle">
+          Décrivez votre pièce (dimensions, style, ambiance recherchée). Nous vous proposons
+          une sélection d’images ou une composition sur-mesure.
+        </p>
+      </div>
+
+      <div class="contact-layout">
+        <div class="contact-card">
+          <ul class="contact-list">
+            <li>
+              <strong>Coordonnées</strong>
+              DREAMART<br>
+              Rue de l’Industrie<br>
+              01150 Sault-Brénaz<br>
+              France
+            </li>
+            <li>
+              <strong>E-mail</strong>
+              <a href="mailto:contact@belmorae.shop">contact@belmorae.shop</a>
+            </li>
+            <li>
+              <strong>Téléphone</strong>
+              <a href="tel:+33745544385">+33 7 45 54 43 85</a>
+            </li>
+          </ul>
+          <p class="contact-note">
+            Joignez si possible quelques photos de votre mur, votre gamme de couleurs
+            (mobilier, sol, luminaires) et votre délai souhaité. Nous adaptons nos propositions
+            à vos volumes et à votre budget.
+          </p>
+        </div>
+
+        <div class="contact-form">
+          <!-- Formulaire simple (non relié à une base de données) -->
+          <form>
+            <div class="field-row">
+              <div class="field-group">
+                <label for="nom">Nom complet</label>
+                <input id="nom" name="nom" type="text" placeholder="Votre nom" required>
+              </div>
+              <div class="field-group">
+                <label for="email">E-mail</label>
+                <input id="email" name="email" type="email" placeholder="vous@example.com" required>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field-group">
+                <label for="telephone">Téléphone</label>
+                <input id="telephone" name="telephone" type="tel" placeholder="+33 7 ..." required>
+              </div>
+              <div class="field-group">
+                <label for="type-espace">Type d’espace</label>
+                <input id="type-espace" name="type-espace" type="text" placeholder="Salon, bureau, café, hôtel...">
+              </div>
+            </div>
+            <div class="field-group">
+              <label for="message">Votre projet</label>
+              <textarea id="message" name="message" placeholder="Dimensions approximatives du mur, style souhaité (minimal, coloré, abstrait...), budget estimé..."></textarea>
+            </div>
+            <button type="submit" class="btn">
+              <span>Envoyer la demande</span>
+              <span class="btn-icon">✉</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
   <footer>
-    &copy; 2025 CAP Garland, LLC. All rights reserved.
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>© <span id="year"></span> DREAMART – Vente d’affiches & décor mural.</div>
+        <div>
+          Rue de l’Industrie, 01150 Sault-Brénaz – Tél : +33 7 45 54 43 85 – E-mail : contact@belmorae.shop
+        </div>
+      </div>
+      <div>
+        Site vitrine en une page – fond néon animé, texte à effet machine à écrire & galerie horizontale.
+      </div>
+    </div>
   </footer>
+
+  <script>
+    // Année automatique
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Progression scroll (ligne en haut)
+    const scrollLine = document.querySelector(".scroll-line");
+    function updateScrollLine() {
+      const scrolled = window.scrollY || window.pageYOffset;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = docHeight > 0 ? scrolled / docHeight : 0;
+      scrollLine.style.transform = "scaleX(" + ratio + ")";
+    }
+    window.addEventListener("scroll", updateScrollLine);
+    window.addEventListener("load", updateScrollLine);
+
+    // Apparition des éléments (reveal)
+    const revealEls = document.querySelectorAll(".reveal");
+    function handleReveal() {
+      const trigger = window.innerHeight * 0.84;
+      revealEls.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < trigger) {
+          el.classList.add("visible");
+        }
+      });
+    }
+    window.addEventListener("scroll", handleReveal);
+    window.addEventListener("load", handleReveal);
+
+    // Machine à écrire
+    const words = [
+      "des affiches prêtes à accrocher",
+      "des murs qui racontent votre histoire",
+      "des compositions sur-mesure pour vos espaces",
+      "un univers visuel cohérent et inspirant"
+    ];
+    let wordIndex = 0;
+    let charIndex = 0;
+    const typingEl = document.getElementById("typing-text");
+    let isDeleting = false;
+
+    function typeLoop() {
+      const currentWord = words[wordIndex];
+      if (!isDeleting) {
+        typingEl.textContent = currentWord.slice(0, charIndex + 1);
+        charIndex++;
+        if (charIndex === currentWord.length) {
+          isDeleting = true;
+          setTimeout(typeLoop, 1600);
+          return;
+        }
+      } else {
+        typingEl.textContent = currentWord.slice(0, charIndex - 1);
+        charIndex--;
+        if (charIndex === 0) {
+          isDeleting = false;
+          wordIndex = (wordIndex + 1) % words.length;
+        }
+      }
+      const delay = isDeleting ? 40 : 70;
+      setTimeout(typeLoop, delay);
+    }
+
+    if (typingEl) {
+      typeLoop();
+    }
+
+    // Effet tilt léger sur les cartes (offres)
+    const tiltCards = document.querySelectorAll("[data-tilt]");
+    tiltCards.forEach((card) => {
+      card.addEventListener("mousemove", (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const rotateY = ((x - rect.width / 2) / rect.width) * 10;
+        const rotateX = -((y - rect.height / 2) / rect.height) * 10;
+        card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        card.classList.add("hovered");
+      });
+
+      card.addEventListener("mouseleave", () => {
+        card.style.transform = "rotateX(0deg) rotateY(0deg)";
+        card.classList.remove("hovered");
+      });
+    });
+
+    // Parallax / tilt sur la frame du hero
+    const heroFrame = document.getElementById("hero-frame");
+    if (heroFrame) {
+      heroFrame.addEventListener("mousemove", (e) => {
+        const rect = heroFrame.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const rotateY = ((x - rect.width / 2) / rect.width) * 8;
+        const rotateX = -((y - rect.height / 2) / rect.height) * 8;
+        heroFrame.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+      heroFrame.addEventListener("mouseleave", () => {
+        heroFrame.style.transform = "rotateX(0deg) rotateY(0deg)";
+      });
+    }
+  </script>
 </body>
 </html>
